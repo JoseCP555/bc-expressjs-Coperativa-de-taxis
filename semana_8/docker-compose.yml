@@ -1,0 +1,12 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: taxicoop-mongo-semana-8
+    restart: unless-stopped
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo_data_semana_8:/data/db
+
+volumes:
+  mongo_data_semana_8:

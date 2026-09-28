@@ -1,0 +1,61 @@
+@baseUrl = http://localhost:3008
+
+### Ruta pública
+GET {{baseUrl}}/api/public/info
+
+### Registro: usa un correo nuevo
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Cliente Taxicoop",
+  "email": "cliente8@example.test",
+  "password": "TaxiCoop-Prueba-2026!"
+}
+
+### Login customer (para probar que el acceso admin devuelve 403)
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "cliente8@example.test",
+  "password": "TaxiCoop-Prueba-2026!"
+}
+
+### Intento de cliente a ruta admin: debe dar 403
+GET {{baseUrl}}/api/admin/users
+
+### Cierra sesión y luego inicia como admin; reemplaza contraseña por la de .env
+POST {{baseUrl}}/api/auth/logout
+
+### Login admin
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@taxicoop.local",
+  "password": "CAMBIAR_POR_LA_PASSWORD_DE_.env"
+}
+
+### Ruta solo admin: debe responder 200 para admin y 403 para customer
+GET {{baseUrl}}/api/admin/users
+
+### Dashboard autenticado
+GET {{baseUrl}}/api/dashboard
+
+### CORS allowlist: prueba con Origin permitido
+GET {{baseUrl}}/api/public/info
+Origin: http://localhost:3000
+
+### CORS: un origin no configurado debe rechazarse
+GET {{baseUrl}}/api/public/info
+Origin: https://origen-no-permitido.example
+
+### Rate limit: repite varias veces el login de forma local para verificar límite
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@taxicoop.local",
+  "password": "incorrecta"
+}

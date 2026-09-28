@@ -1,0 +1,45 @@
+@baseUrl = http://localhost:3007
+
+### Estado de la API
+GET {{baseUrl}}/health
+
+### Registro: usa un correo nuevo si lo envias varias veces
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Cliente Taxicoop",
+  "email": "cliente1@example.test",
+  "password": "TaxiCoop-Prueba-2026!"
+}
+
+### Login: el cliente HTTP debe conservar Set-Cookie
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "cliente1@example.test",
+  "password": "TaxiCoop-Prueba-2026!"
+}
+
+### Perfil protegido
+GET {{baseUrl}}/api/auth/me
+
+### Crear solicitud de taxi
+POST {{baseUrl}}/api/trips
+Content-Type: application/json
+
+{
+  "pickupAddress": "Calle 10 # 5-20, Bogotá",
+  "dropoffAddress": "Aeropuerto El Dorado, Bogotá",
+  "notes": "Recoger en la entrada principal"
+}
+
+### Ver servicios del usuario
+GET {{baseUrl}}/api/trips
+
+### Renovar la sesión (cookie refreshToken)
+POST {{baseUrl}}/api/auth/refresh
+
+### Cerrar sesión
+POST {{baseUrl}}/api/auth/logout
